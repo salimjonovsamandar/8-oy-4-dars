@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import styles from "./main.module.css";
 import telegram from "./img/telegram.svg";
 import instagram from "./img/instagram.svg";
@@ -6,6 +7,70 @@ import github from "./img/github.svg";
 import facebook from "./img/facebook.svg";
 
 export default function index() {
+  const companyRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const telRef = useRef<HTMLInputElement>(null);
+  const countryRef = useRef<HTMLInputElement>(null);
+  const cityRef = useRef<HTMLInputElement>(null);
+  const addresRef = useRef<HTMLInputElement>(null);
+  const numRef = useRef<HTMLInputElement>(null);
+
+  function formValidate(
+    company: string,
+    email: string,
+    tel: string,
+    country: string,
+    city: string,
+    address: string,
+    num: number
+  ) {
+    if (!company || !company.trim()) {
+      alert("Kompaniya nomini kiriting");
+      return false;
+    }
+    if (!email || !email.trim()) {
+      alert("Emailni kiriting");
+      return false;
+    }
+    if (!tel || !tel.trim()) {
+      alert("Telefon raqamni kiriting");
+      return false;
+    }
+    if (!country || !country.trim()) {
+      alert("Davlatni kiriting");
+      return false;
+    }
+    if (!city || !city.trim()) {
+      alert("Shahar nomini kiriting");
+      return false;
+    }
+    if (!address || !address.trim()) {
+      alert("Manzilni kiriting");
+      return false;
+    }
+    if (!num) {
+      alert("Hodimlar sonini kiriting");
+      return false;
+    }
+
+    return true;
+  }
+  function heandleClick() {
+    if (
+      formValidate(
+        companyRef.current?.value || "",
+        emailRef.current?.value || "",
+        telRef.current?.value || "",
+        countryRef.current?.value || "",
+        cityRef.current?.value || "",
+        addresRef.current?.value || "",
+        parseFloat(numRef.current?.value || "")
+      )
+    ) {
+      alert("Malumotlar mavafaqiyatli saqlandi");
+    }
+  }
+
   return (
     <div>
       <div className={styles.container}>
@@ -22,6 +87,7 @@ export default function index() {
             <label>
               <span>Kompaniya nomi *</span>
               <input
+                ref={companyRef}
                 className={styles.name}
                 type="text"
                 placeholder="Kompaniya nomi"
@@ -29,11 +95,17 @@ export default function index() {
             </label>
             <label>
               <span>Email *</span>
-              <input className={styles.name} type="text" placeholder="Email" />
+              <input
+                ref={emailRef}
+                className={styles.name}
+                type="text"
+                placeholder="Email"
+              />
             </label>
             <label>
               <span>Telefon raqami *</span>
               <input
+                ref={telRef}
                 className={styles.name}
                 type="number"
                 placeholder="Namuna: 901234567"
@@ -65,6 +137,7 @@ export default function index() {
               <div className="davlat">
                 <span>Davlat *</span>
                 <input
+                  ref={countryRef}
                   className={styles.dav}
                   type="text"
                   placeholder="Kompaniya nomi"
@@ -73,6 +146,7 @@ export default function index() {
               <div className="shahar">
                 <span>Shahar *</span>
                 <input
+                  ref={cityRef}
                   className={styles.dav}
                   type="text"
                   placeholder="Kompaniya nomi"
@@ -86,6 +160,7 @@ export default function index() {
             <label>
               <span>Hodimlar soni *</span>
               <input
+                ref={addresRef}
                 className={styles.name}
                 type="number"
                 placeholder="Hodimlar soni"
@@ -102,7 +177,9 @@ export default function index() {
         </form>
         <div className={styles.footer}>
           <button className={styles.orqabtn}>Ortga</button>
-          <button className={styles.oldbtn}>Keyingisi</button>
+          <button onClick={heandleClick} className={styles.oldbtn}>
+            Keyingisi
+          </button>
         </div>
       </div>
     </div>
