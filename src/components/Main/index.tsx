@@ -67,7 +67,7 @@ export default function index() {
         parseFloat(numRef.current?.value || "")
       )
     ) {
-      alert("Malumotlar mavafaqiyatli saqlandi");
+      alert("Ro'yhatdan muvofaqiyatli o'tdingiz");
     }
   }
 
