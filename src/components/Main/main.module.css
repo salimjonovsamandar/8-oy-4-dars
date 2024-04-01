@@ -24,19 +24,20 @@ body {
   font-style: normal;
   font-weight: 450;
   line-height: 130%;
+  margin-bottom: 16px;
 }
-.img {
-  margin-top: 32px;
+.formImg {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 15px;
 }
-.sicl {
-  width: 84px;
-  height: 84px;
-  border-radius: 50%;
-  background-color: burlywood;
+.formImg input {
+  display: none;
 }
+.formImg label {
+  cursor: pointer;
+}
+
 .yuklash {
   color: var(--Mai, #5361e4);
   font-size: 16px;

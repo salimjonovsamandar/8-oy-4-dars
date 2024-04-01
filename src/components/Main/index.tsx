@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import FormDefault from "../../assets/formDefaultRadius.svg";
 import styles from "./main.module.css";
 import telegram from "./img/telegram.svg";
 import instagram from "./img/instagram.svg";
@@ -14,6 +15,30 @@ export default function index() {
   const cityRef = useRef<HTMLInputElement>(null);
   const addresRef = useRef<HTMLInputElement>(null);
   const numRef = useRef<HTMLInputElement>(null);
+
+  const [formData, setFormData] = useState({
+    selectedImage: FormDefault,
+    company: "",
+    email: "",
+    phoneNumber: "",
+    city: "",
+    livingPlace: "",
+    employeeCount: "",
+    description: "",
+    country: "",
+  });
+
+  const [errors, setErrors] = useState({
+    company: "",
+    email: "",
+    phoneNumber: "",
+    city: "",
+    livingPlace: "",
+    employeeCount: "",
+    description: "",
+    country: "",
+    selectedImage: "",
+  });
 
   function formValidate(
     company: string,
@@ -55,6 +80,38 @@ export default function index() {
 
     return true;
   }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          setFormData((prevData) => ({
+            ...prevData,
+            selectedImage: reader.result as string,
+            country: prevData.country, // Country xususiyatini saqlash
+          }));
+          // Rasm formatini tekshirish
+          const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+          if (!allowedExtensions.exec(file.name)) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              selectedImage:
+                "Faqat JPG, JPEG yoki PNG formatidagi rasmni yuklash mumkin.",
+            }));
+          } else {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              selectedImage: "",
+            }));
+          }
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   function heandleClick() {
     if (
       formValidate(
@@ -79,10 +136,22 @@ export default function index() {
           <p>Kompaniya haqidagi ma'lumotlarni kiriting</p>
         </div>
         <form className={styles.form}>
-          <div className={styles.img}>
-            <div className={styles.sicl}></div>
-            <button className={styles.yuklash}>Yuklash</button>
+          <div className={styles.formImg}>
+            <img src={formData.selectedImage} width={84} height={84} alt="" />
+            <label htmlFor="file-upload" className={styles.uploadButton}>
+              Yuklash
+              <input
+                id="file-upload"
+                type="file"
+                placeholder=" "
+                onChange={handleFileChange}
+              />
+            </label>
+            {errors.selectedImage && (
+              <span className={styles.error}>{errors.selectedImage}</span>
+            )}
           </div>
+
           <div className={styles.forma}>
             <label>
               <span>Kompaniya nomi *</span>
@@ -160,7 +229,7 @@ export default function index() {
             <label>
               <span>Hodimlar soni *</span>
               <input
-                ref={addresRef}
+                ref={cityRef}
                 className={styles.name}
                 type="number"
                 placeholder="Hodimlar soni"
